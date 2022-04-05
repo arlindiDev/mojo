@@ -1,6 +1,5 @@
 package com.mojo.app.drawing
 
-import android.graphics.RectF
 import com.mojo.app.Input
 import com.mojo.app.LeftAnchor
 import com.mojo.app.RightAnchor
@@ -8,11 +7,11 @@ import kotlin.math.abs
 import kotlin.math.min
 
 interface Anchor {
-    fun toParentBounds(input: Input): RectF
+    fun toParentBounds(input: Input): Rect
 }
 
-class Left(private val bounds: RectF) : Anchor {
-    override fun toParentBounds(input: Input): RectF {
+class Left(private val bounds: Rect) : Anchor {
+    override fun toParentBounds(input: Input): Rect {
         val width = bounds.right - bounds.left
 
         val left = bounds.left + width * input.x.toFloat()
@@ -25,8 +24,8 @@ class Left(private val bounds: RectF) : Anchor {
     }
 }
 
-class Bottom(private val bounds: RectF) : Anchor {
-    override fun toParentBounds(input: Input): RectF {
+class Bottom(private val bounds: Rect) : Anchor {
+    override fun toParentBounds(input: Input): Rect {
         val height = bounds.right - bounds.left
 
         val top = bounds.top + height * input.y.toFloat()
@@ -39,8 +38,8 @@ class Bottom(private val bounds: RectF) : Anchor {
     }
 }
 
-class CenterX(private val bounds: RectF) : Anchor {
-    override fun toParentBounds(input: Input): RectF {
+class CenterX(private val bounds: Rect) : Anchor {
+    override fun toParentBounds(input: Input): Rect {
         val right = (bounds.right * input.width.toFloat()) / 2
         val left = bounds.left - right
 
@@ -53,8 +52,8 @@ class CenterX(private val bounds: RectF) : Anchor {
     }
 }
 
-class CenterY(private val bounds: RectF) : Anchor {
-    override fun toParentBounds(input: Input): RectF {
+class CenterY(private val bounds: Rect) : Anchor {
+    override fun toParentBounds(input: Input): Rect {
         val bottom = (bounds.bottom * input.height.toFloat()) / 2
         val top = bounds.top - bottom
 
@@ -67,7 +66,7 @@ class CenterY(private val bounds: RectF) : Anchor {
     }
 }
 
-fun RectF.toAnchor(input: Input): RectF {
+fun Rect.toAnchor(input: Input): Rect {
     val anchorX = when (input.anchorX) {
         LeftAnchor.left -> Left(this)
         LeftAnchor.center -> CenterX(this)

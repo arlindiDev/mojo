@@ -1,8 +1,6 @@
 package com.mojo.app.drawing
 
-import android.graphics.RectF
-
-fun RectF.withPadding(padding: Double): RectF {
+fun Rect.withPadding(padding: Double): Rect {
     if(padding == 0.0) {
         return this
     }
