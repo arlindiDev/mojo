@@ -1,14 +1,15 @@
 package com.mojo.app
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import androidx.appcompat.app.AppCompatActivity
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 
 class MainActivity : AppCompatActivity() {
 
-    val gson = Gson()
+    var moshi: Moshi = Moshi.Builder().build()
+    var jsonAdapter: JsonAdapter<Input> = moshi.adapter(Input::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,9 +18,9 @@ class MainActivity : AppCompatActivity() {
         Log.i("ARLINDO", readRawJson().toString())
     }
 
-    private fun readRawJson(): Input {
+    private fun readRawJson(): Input? {
         resources.openRawResource(R.raw.input).bufferedReader().use {
-            return gson.fromJson(it.readText(), object: TypeToken<Input>() {}.type)
+            return jsonAdapter.fromJson(it.readText())
         }
     }
 }
