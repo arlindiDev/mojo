@@ -41,14 +41,6 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
         }
     }
 
-    private fun Float.add(padding: Float): Float {
-        return this + this * padding
-    }
-
-    private fun Float.subtract(padding: Float): Float {
-        return this - this * padding
-    }
-
     private fun Canvas.drawBackground(bounds: RectF, backgroundColor: Int) {
         val paint = Paint().apply {
             color = backgroundColor
