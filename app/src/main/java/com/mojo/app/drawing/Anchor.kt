@@ -5,6 +5,7 @@ import com.mojo.app.Input
 import com.mojo.app.LeftAnchor
 import com.mojo.app.RightAnchor
 import com.mojo.app.copy
+import kotlin.math.abs
 
 interface Anchor {
     fun toParentBounds(input: Input): RectF
@@ -34,14 +35,44 @@ class Bottom(private val bounds: RectF) : Anchor {
     }
 }
 
+class CenterX(private val bounds: RectF) : Anchor {
+    override fun toParentBounds(input: Input): RectF {
+        val right = (bounds.right * input.width.toFloat()) / 2
+        val left = bounds.left - right
+
+        val width = ((abs(left) + right) * input.x.toFloat()) * 2
+
+        return bounds.copy(
+            left = left + width,
+            right = right + width,
+        )
+    }
+}
+
+class CenterY(private val bounds: RectF) : Anchor {
+    override fun toParentBounds(input: Input): RectF {
+        val bottom = (bounds.bottom * input.height.toFloat()) / 2
+        val top = bounds.top - bottom
+
+        val height = ((abs(top) + bottom) * input.y.toFloat()) * 2
+
+        return bounds.copy(
+            top = top + height,
+            bottom = bottom + height
+        )
+    }
+}
+
 fun RectF.toAnchor(input: Input): RectF {
     val anchorX = when (input.anchorX) {
         LeftAnchor.left -> Left(this)
+        LeftAnchor.center -> CenterX(this)
         else -> Left(this)
     }
 
     val anchorY = when (input.anchorY) {
         RightAnchor.bottom -> Bottom(this)
+        RightAnchor.center -> CenterY(this)
         else -> Bottom(this)
     }
 
