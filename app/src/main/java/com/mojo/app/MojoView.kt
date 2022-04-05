@@ -8,7 +8,9 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import com.mojo.app.drawing.color
 import com.mojo.app.drawing.toAnchor
+import com.mojo.app.drawing.withPadding
 
 class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -31,6 +33,7 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
         val canvas = this
 
         with(input) {
+            Log.i("ARLINDO", "bounds ${bounds.toShortString()} ${input.backgroundColor}")
             val parentBounds = bounds.toAnchor(input)
             Log.i("ARLINDO", "parent ${parentBounds.toShortString()} ${input.backgroundColor}")
 
@@ -38,6 +41,12 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
                 parentBounds,
                 backgroundColor.color()
             )
+
+            children.forEachIndexed { index, childInput ->
+                val childBounds = parentBounds.withPadding(input.padding)
+
+                drawInput(childBounds, childInput)
+            }
         }
     }
 
@@ -50,12 +59,3 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
         drawRect(bounds, paint)
     }
 }
-
-fun RectF.copy(
-    left: Float = this.left,
-    top: Float = this.top,
-    right: Float = this.right,
-    bottom: Float = this.bottom,
-) = RectF(left, top, right, bottom)
-
-fun String.color() = Color.parseColor(this)

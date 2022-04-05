@@ -4,7 +4,6 @@ import android.graphics.RectF
 import com.mojo.app.Input
 import com.mojo.app.LeftAnchor
 import com.mojo.app.RightAnchor
-import com.mojo.app.copy
 import kotlin.math.abs
 
 interface Anchor {
@@ -14,7 +13,7 @@ interface Anchor {
 class Left(private val bounds: RectF) : Anchor {
     override fun toParentBounds(input: Input): RectF {
         val left = bounds.left + bounds.right * input.x.toFloat()
-        val right = left + bounds.right * input.width.toFloat()
+        val right = left * input.x.toFloat() + bounds.right * input.width.toFloat()
 
         return bounds.copy(
             left = left,
@@ -26,7 +25,7 @@ class Left(private val bounds: RectF) : Anchor {
 class Bottom(private val bounds: RectF) : Anchor {
     override fun toParentBounds(input: Input): RectF {
         val top = bounds.top + bounds.bottom * input.y.toFloat()
-        val bottom = top + bounds.bottom * input.height.toFloat()
+        val bottom = top * input.y.toFloat() + bounds.bottom * input.height.toFloat()
 
         return bounds.copy(
             top = top,
@@ -80,8 +79,4 @@ fun RectF.toAnchor(input: Input): RectF {
     val anchorYBounds = anchorY.toParentBounds(input)
 
     return anchorXBounds.copy(top = anchorYBounds.top, bottom = anchorYBounds.bottom)
-}
-
-fun Double.invert(): Float {
-    return (1 - this).toFloat()
 }
