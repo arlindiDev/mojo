@@ -1,9 +1,7 @@
 package com.mojo.app
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 
@@ -18,16 +16,46 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     override fun draw(canvas: Canvas?) {
         super.draw(canvas)
 
-        canvas?.drawBackground()
+        val bounds = RectF(0.0f, 0.0f, width.toFloat(), height.toFloat())
+
+        canvas?.drawInput(bounds, input)
     }
 
-    private fun Canvas.drawBackground() {
+    private fun Canvas.drawInput(bounds: RectF, input: Input) {
+        val canvas = this
+        with(input) {
+            canvas.drawBackground(bounds, backgroundColor.color())
+
+            for (child in children) {
+                val childBounds = bounds.toChildBounds(padding.toFloat())
+
+                drawInput(childBounds, child)
+            }
+        }
+    }
+
+    private fun RectF.toChildBounds(padding: Float) = RectF(
+        left + right * padding,
+        top + bottom * padding,
+        right - right * padding,
+        bottom - bottom * padding
+    )
+
+    private fun Float.add(padding: Float): Float {
+        return this + this * padding
+    }
+
+    private fun Float.subtract(padding: Float): Float {
+        return this - this * padding
+    }
+
+    private fun Canvas.drawBackground(bounds: RectF, backgroundColor: Int) {
         val paint = Paint().apply {
-            color = input.backgroundColor.color()
+            color = backgroundColor
             style = Paint.Style.FILL
         }
 
-        drawPaint(paint)
+        drawRect(bounds, paint)
     }
 }
 
