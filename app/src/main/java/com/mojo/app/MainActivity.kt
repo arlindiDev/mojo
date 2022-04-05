@@ -2,6 +2,7 @@ package com.mojo.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.mojo.app.drawing.InputDrawAdapter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         fetchInput()?.let {
-            mojoView.input = it
+            mojoView.inputAdapter = InputDrawAdapter(it)
         }
     }
 
