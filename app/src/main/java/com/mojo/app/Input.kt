@@ -20,9 +20,7 @@ data class Input(
 )
 
 enum class LeftAnchor {
-    left,
-    center,
-    right
+    left, center, right
 }
 
 enum class RightAnchor {
