@@ -28,3 +28,7 @@ enum class LeftAnchor {
 enum class RightAnchor {
     bottom, center, top
 }
+
+val defaultInput = Input(
+    backgroundColor = "#fff"
+)

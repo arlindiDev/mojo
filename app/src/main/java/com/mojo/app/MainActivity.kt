@@ -1,10 +1,10 @@
 package com.mojo.app
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,10 +15,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.i("ARLINDO", readRawJson().toString())
+        fetchInput()?.let {
+            mojoView.input = it
+        }
     }
 
-    private fun readRawJson(): Input? {
+    private fun fetchInput(): Input? {
         resources.openRawResource(R.raw.input).bufferedReader().use {
             return jsonAdapter.fromJson(it.readText())
         }
