@@ -5,8 +5,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Input(
-    val width: Double = 0.0,
-    val height: Double = 0.0,
+    val width: Double = 1.0,
+    val height: Double = 1.0,
     val x: Double = 0.0,
     val y: Double = 0.0,
     @Json(name="anchor_x")
