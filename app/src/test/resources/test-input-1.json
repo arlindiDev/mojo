@@ -24,7 +24,7 @@
           "x": 0,
           "y": 0,
           "anchor_x": "left",
-          "anchor_y": "bottom",
+          "anchor_y": "top",
           "background_color": "#cecece"
         }
       ]

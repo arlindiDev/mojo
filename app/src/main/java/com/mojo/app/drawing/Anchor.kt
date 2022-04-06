@@ -23,9 +23,9 @@ class Left(private val bounds: Rect) : Anchor {
     }
 }
 
-class Bottom(private val bounds: Rect) : Anchor {
+class Top(private val bounds: Rect) : Anchor {
     override fun toParentBounds(input: Input): Rect {
-        val height = bounds.right - bounds.left
+        val height = bounds.bottom - bounds.top
 
         val top = bounds.top + height * input.y.toFloat()
         val bottom = min(top + height * input.height.toFloat(), bounds.bottom)
@@ -54,7 +54,7 @@ class CenterX(private val bounds: Rect) : Anchor {
 
 class CenterY(private val bounds: Rect) : Anchor {
     override fun toParentBounds(input: Input): Rect {
-        val height = bounds.right - bounds.left
+        val height = bounds.bottom - bounds.top
 
         val top = bounds.top + height * input.y.toFloat()
         val bottom = top + height * input.height.toFloat()
@@ -67,17 +67,45 @@ class CenterY(private val bounds: Rect) : Anchor {
     }
 }
 
+class Right(private val bounds: Rect) : Anchor {
+    override fun toParentBounds(input: Input): Rect {
+        val width = bounds.right - bounds.left
+
+        val left = bounds.right - width * input.width.toFloat() - width * input.x.toFloat()
+        val right = bounds.right - width * input.x.toFloat()
+
+        return bounds.copy(
+            right = right,
+            left = left
+        )
+    }
+}
+
+class Bottom(private val bounds: Rect) : Anchor {
+    override fun toParentBounds(input: Input): Rect {
+        val height = bounds.bottom - bounds.top
+
+        val top = bounds.bottom - height * input.height.toFloat() - height * input.y.toFloat()
+        val bottom = bounds.bottom - height * input.y.toFloat()
+
+        return bounds.copy(
+            top = top,
+            bottom = bottom
+        )
+    }
+}
+
 fun Rect.toAnchor(input: Input): Rect {
     val anchorX = when (input.anchorX) {
         LeftAnchor.left -> Left(this)
         LeftAnchor.center -> CenterX(this)
-        else -> Left(this)
+        LeftAnchor.right -> Right(this)
     }
 
     val anchorY = when (input.anchorY) {
-        RightAnchor.bottom -> Bottom(this)
+        RightAnchor.top -> Top(this)
         RightAnchor.center -> CenterY(this)
-        else -> Bottom(this)
+        RightAnchor.bottom -> Bottom(this)
     }
 
     val anchorXBounds = anchorX.toParentBounds(input)
