@@ -49,12 +49,36 @@ class InputDrawAdapterTest {
                 "#000000"
             ),
             InputDraw(
-                Rect(left = -350.0f, top = -350.0f, right = 450.0f, bottom = 450.0f),
+                Rect(left = -300.0f, top = -300.0f, right = 500.0f, bottom = 500.0f),
                 "#73D3A2"
             ),
             InputDraw(
-                Rect(left = -350.0f, top = -350.0f, right = 50.0f, bottom = 50.0f),
+                Rect(left = -500.0f, top = -500.0f, right = -100.0f, bottom = -100.0f),
                 "#cecece"
+            )
+        )
+
+        assertThat(result).isEqualTo(fakeAdaptedResult)
+    }
+
+    @Test
+    fun `should adapt 2 nested children with anchor_x=center and anchor_y=center`() {
+        val subject = InputDrawAdapter(input = toInput("/test-input-3.json"))
+
+        val result = subject.adapt(1000.0f, 1000.0f)
+
+        val fakeAdaptedResult = listOf(
+            InputDraw(
+                Rect(0.0f, 0.0f, 1000.0f, 1000.0f),
+                "#000000"
+            ),
+            InputDraw(
+                Rect(left = 100.0f, top = 100.0f, right = 900.0f, bottom = 900.0f),
+                "#73D3A2"
+            ),
+            InputDraw(
+                Rect(left = 180.0f, top = 420.0f, right = 820.0f, bottom = 580.0f),
+                "#6BA2F7"
             )
         )
 

@@ -3,7 +3,6 @@ package com.mojo.app.drawing
 import com.mojo.app.Input
 import com.mojo.app.LeftAnchor
 import com.mojo.app.RightAnchor
-import kotlin.math.abs
 import kotlin.math.min
 
 interface Anchor {
@@ -29,7 +28,7 @@ class Bottom(private val bounds: Rect) : Anchor {
         val height = bounds.right - bounds.left
 
         val top = bounds.top + height * input.y.toFloat()
-        val bottom =  min(top + height * input.height.toFloat(), bounds.bottom)
+        val bottom = min(top + height * input.height.toFloat(), bounds.bottom)
 
         return bounds.copy(
             top = top,
@@ -40,28 +39,30 @@ class Bottom(private val bounds: Rect) : Anchor {
 
 class CenterX(private val bounds: Rect) : Anchor {
     override fun toParentBounds(input: Input): Rect {
-        val right = (bounds.right * input.width.toFloat()) / 2
-        val left = bounds.left - right
+        val width = bounds.right - bounds.left
 
-        val width = ((abs(left) + right) * input.x.toFloat()) * 2
+        val left = bounds.left + width * input.x.toFloat()
+        val right = left + width * input.width.toFloat()
 
+        val center = (right - left) / 2
         return bounds.copy(
-            left = left + width,
-            right = right + width,
+            left = left - center,
+            right = right - center,
         )
     }
 }
 
 class CenterY(private val bounds: Rect) : Anchor {
     override fun toParentBounds(input: Input): Rect {
-        val bottom = (bounds.bottom * input.height.toFloat()) / 2
-        val top = bounds.top - bottom
+        val height = bounds.right - bounds.left
 
-        val height = ((abs(top) + bottom) * input.y.toFloat()) * 2
+        val top = bounds.top + height * input.y.toFloat()
+        val bottom = top + height * input.height.toFloat()
 
+        val center = (bottom - top) / 2
         return bounds.copy(
-            top = top + height,
-            bottom = bottom + height
+            top = top - center,
+            bottom = bottom - center
         )
     }
 }
