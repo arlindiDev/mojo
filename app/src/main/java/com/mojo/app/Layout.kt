@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Input(
+data class Layout(
     val width: Double = 1.0,
     val height: Double = 1.0,
     val x: Double = 0.0,
@@ -16,7 +16,7 @@ data class Input(
     @Json(name="background_color")
     val backgroundColor: String,
     val padding: Double = 0.0,
-    val children: List<Input> = emptyList()
+    val children: List<Layout> = emptyList()
 )
 
 enum class LeftAnchor {
@@ -27,6 +27,6 @@ enum class RightAnchor {
     bottom, center, top
 }
 
-val defaultInput = Input(
+val defaultLayout = Layout(
     backgroundColor = "#fff"
 )

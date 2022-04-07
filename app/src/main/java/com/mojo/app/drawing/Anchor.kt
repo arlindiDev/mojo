@@ -1,20 +1,20 @@
 package com.mojo.app.drawing
 
-import com.mojo.app.Input
+import com.mojo.app.Layout
 import com.mojo.app.LeftAnchor
 import com.mojo.app.RightAnchor
 import kotlin.math.min
 
 interface Anchor {
-    fun toParentBounds(input: Input): Rect
+    fun toParentBounds(layout: Layout): Rect
 }
 
 class Left(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(input: Input): Rect {
+    override fun toParentBounds(layout: Layout): Rect {
         val width = bounds.right - bounds.left
 
-        val left = bounds.left + width * input.x.toFloat()
-        val right = min(left + width * input.width.toFloat(), bounds.right)
+        val left = bounds.left + width * layout.x.toFloat()
+        val right = min(left + width * layout.width.toFloat(), bounds.right)
 
         return bounds.copy(
             left = left,
@@ -24,11 +24,11 @@ class Left(private val bounds: Rect) : Anchor {
 }
 
 class Top(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(input: Input): Rect {
+    override fun toParentBounds(layout: Layout): Rect {
         val height = bounds.bottom - bounds.top
 
-        val top = bounds.top + height * input.y.toFloat()
-        val bottom = min(top + height * input.height.toFloat(), bounds.bottom)
+        val top = bounds.top + height * layout.y.toFloat()
+        val bottom = min(top + height * layout.height.toFloat(), bounds.bottom)
 
         return bounds.copy(
             top = top,
@@ -38,11 +38,11 @@ class Top(private val bounds: Rect) : Anchor {
 }
 
 class CenterX(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(input: Input): Rect {
+    override fun toParentBounds(layout: Layout): Rect {
         val width = bounds.right - bounds.left
 
-        val left = bounds.left + width * input.x.toFloat()
-        val right = left + width * input.width.toFloat()
+        val left = bounds.left + width * layout.x.toFloat()
+        val right = left + width * layout.width.toFloat()
 
         val center = (right - left) / 2
         return bounds.copy(
@@ -53,11 +53,11 @@ class CenterX(private val bounds: Rect) : Anchor {
 }
 
 class CenterY(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(input: Input): Rect {
+    override fun toParentBounds(layout: Layout): Rect {
         val height = bounds.bottom - bounds.top
 
-        val top = bounds.top + height * input.y.toFloat()
-        val bottom = top + height * input.height.toFloat()
+        val top = bounds.top + height * layout.y.toFloat()
+        val bottom = top + height * layout.height.toFloat()
 
         val center = (bottom - top) / 2
         return bounds.copy(
@@ -68,11 +68,11 @@ class CenterY(private val bounds: Rect) : Anchor {
 }
 
 class Right(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(input: Input): Rect {
+    override fun toParentBounds(layout: Layout): Rect {
         val width = bounds.right - bounds.left
 
-        val left = bounds.left - width * input.width.toFloat() + width * input.x.toFloat()
-        val right = bounds.left + width * input.x.toFloat()
+        val left = bounds.left - width * layout.width.toFloat() + width * layout.x.toFloat()
+        val right = bounds.left + width * layout.x.toFloat()
 
         return bounds.copy(
             right = right,
@@ -82,11 +82,11 @@ class Right(private val bounds: Rect) : Anchor {
 }
 
 class Bottom(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(input: Input): Rect {
+    override fun toParentBounds(layout: Layout): Rect {
         val height = bounds.bottom - bounds.top
 
-        val top = bounds.bottom - height * input.height.toFloat() - height * input.y.toFloat()
-        val bottom = bounds.bottom - height * input.y.toFloat()
+        val top = bounds.bottom - height * layout.height.toFloat() - height * layout.y.toFloat()
+        val bottom = bounds.bottom - height * layout.y.toFloat()
 
         return bounds.copy(
             top = top,
@@ -95,21 +95,21 @@ class Bottom(private val bounds: Rect) : Anchor {
     }
 }
 
-fun Rect.toAnchor(input: Input): Rect {
-    val anchorX = when (input.anchorX) {
+fun Rect.toAnchor(layout: Layout): Rect {
+    val anchorX = when (layout.anchorX) {
         LeftAnchor.left -> Left(this)
         LeftAnchor.center -> CenterX(this)
         LeftAnchor.right -> Right(this)
     }
 
-    val anchorY = when (input.anchorY) {
+    val anchorY = when (layout.anchorY) {
         RightAnchor.top -> Top(this)
         RightAnchor.center -> CenterY(this)
         RightAnchor.bottom -> Bottom(this)
     }
 
-    val anchorXBounds = anchorX.toParentBounds(input)
-    val anchorYBounds = anchorY.toParentBounds(input)
+    val anchorXBounds = anchorX.toParentBounds(layout)
+    val anchorYBounds = anchorY.toParentBounds(layout)
 
     return anchorXBounds.copy(top = anchorYBounds.top, bottom = anchorYBounds.bottom)
 }

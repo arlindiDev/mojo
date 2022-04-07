@@ -6,14 +6,14 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import com.mojo.app.drawing.InputDrawAdapter
+import com.mojo.app.drawing.LayoutAdapter
 import com.mojo.app.drawing.color
-import com.mojo.app.drawing.defaultInputDrawAdapter
+import com.mojo.app.drawing.defaultLayoutAdapter
 import com.mojo.app.drawing.toRectF
 
 class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    var inputAdapter: InputDrawAdapter = defaultInputDrawAdapter
+    var layoutAdapter: LayoutAdapter = defaultLayoutAdapter
         set(value) {
             field = value
             invalidate()
@@ -22,10 +22,10 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     override fun draw(canvas: Canvas?) {
         super.draw(canvas)
 
-        val inputs = inputAdapter.adapt(width.toFloat(), height.toFloat())
+        val renderObjects = layoutAdapter.adapt(width.toFloat(), height.toFloat())
 
-        inputs.forEach { input ->
-            canvas?.drawBackground(input.bounds.toRectF(), input.backgroundColor.color())
+        renderObjects.forEach { objectToRender ->
+            canvas?.drawBackground(objectToRender.bounds.toRectF(), objectToRender.backgroundColor.color())
         }
     }
 

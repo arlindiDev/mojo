@@ -2,7 +2,7 @@ package com.mojo.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mojo.app.drawing.InputDrawAdapter
+import com.mojo.app.drawing.LayoutAdapter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_main.*
@@ -10,19 +10,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     var moshi: Moshi = Moshi.Builder().build()
-    var jsonAdapter: JsonAdapter<Input> = moshi.adapter(Input::class.java)
+    var jsonAdapter: JsonAdapter<Layout> = moshi.adapter(Layout::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fetchInput()?.let {
-            mojoView.inputAdapter = InputDrawAdapter(it)
+        fetchLayout()?.let {
+            mojoView.layoutAdapter = LayoutAdapter(it)
         }
     }
 
-    private fun fetchInput(): Input? {
-        resources.openRawResource(R.raw.input).bufferedReader().use {
+    private fun fetchLayout(): Layout? {
+        resources.openRawResource(R.raw.layout).bufferedReader().use {
             return jsonAdapter.fromJson(it.readText())
         }
     }
