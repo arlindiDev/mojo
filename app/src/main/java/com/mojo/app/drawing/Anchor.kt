@@ -71,8 +71,8 @@ class Right(private val bounds: Rect) : Anchor {
     override fun toParentBounds(input: Input): Rect {
         val width = bounds.right - bounds.left
 
-        val left = bounds.right - width * input.width.toFloat() - width * input.x.toFloat()
-        val right = bounds.right - width * input.x.toFloat()
+        val left = bounds.left - width * input.width.toFloat() + width * input.x.toFloat()
+        val right = bounds.left + width * input.x.toFloat()
 
         return bounds.copy(
             right = right,

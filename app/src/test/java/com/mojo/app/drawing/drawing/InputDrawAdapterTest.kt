@@ -98,7 +98,7 @@ class InputDrawAdapterTest {
                 "#000000"
             ),
             InputDraw(
-                Rect(left = 500.0f, top = 500.0f, right = 900.0f, bottom = 900.0f),
+                Rect(left = -300.0f, top = 500.0f, right = 100.0f, bottom = 900.0f),
                 "#cecece"
             ),
         )
