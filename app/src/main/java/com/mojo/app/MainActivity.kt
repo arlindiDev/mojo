@@ -2,28 +2,20 @@ package com.mojo.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.mojo.app.data.LayoutFetcher
 import com.mojo.app.drawing.LayoutAdapter
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.mojoView
 
 class MainActivity : AppCompatActivity() {
 
-    var moshi: Moshi = Moshi.Builder().build()
-    var jsonAdapter: JsonAdapter<Layout> = moshi.adapter(Layout::class.java)
+    val layoutFetcher = LayoutFetcher()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fetchLayout()?.let {
-            mojoView.layoutAdapter = LayoutAdapter(it)
-        }
-    }
-
-    private fun fetchLayout(): Layout? {
-        resources.openRawResource(R.raw.layout).bufferedReader().use {
-            return jsonAdapter.fromJson(it.readText())
+        layoutFetcher.fetch(resources, R.raw.layout)?.let { layout ->
+            mojoView.layoutAdapter = LayoutAdapter(layout)
         }
     }
 }

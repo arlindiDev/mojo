@@ -1,4 +1,4 @@
-package com.mojo.app
+package com.mojo.app.data
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

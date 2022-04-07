@@ -1,7 +1,7 @@
 package com.mojo.app.drawing
 
-import com.mojo.app.Layout
-import com.mojo.app.defaultLayout
+import com.mojo.app.data.Layout
+import com.mojo.app.data.defaultLayout
 
 class LayoutAdapter(private val layout: Layout) {
     private lateinit var renderObjects: MutableList<RenderObjet>

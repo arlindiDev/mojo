@@ -1,8 +1,8 @@
 package com.mojo.app.drawing
 
-import com.mojo.app.Layout
-import com.mojo.app.LeftAnchor
-import com.mojo.app.RightAnchor
+import com.mojo.app.data.Layout
+import com.mojo.app.data.LeftAnchor
+import com.mojo.app.data.RightAnchor
 import kotlin.math.min
 
 interface Anchor {

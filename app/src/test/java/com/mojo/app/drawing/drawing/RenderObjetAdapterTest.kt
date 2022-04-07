@@ -1,7 +1,7 @@
 package com.mojo.app.drawing.drawing
 
 import com.google.common.truth.Truth.assertThat
-import com.mojo.app.Layout
+import com.mojo.app.data.Layout
 import com.mojo.app.drawing.RenderObjet
 import com.mojo.app.drawing.LayoutAdapter
 import com.mojo.app.drawing.Rect
