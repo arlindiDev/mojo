@@ -2,7 +2,7 @@ package com.mojo.app.engine.drawing
 
 import com.google.common.truth.Truth.assertThat
 import com.mojo.app.data.Layout
-import com.mojo.app.engine.RenderObjet
+import com.mojo.app.engine.RenderObject
 import com.mojo.app.engine.LayoutAdapter
 import com.mojo.app.engine.Bounds
 import com.squareup.moshi.JsonAdapter
@@ -10,7 +10,7 @@ import com.squareup.moshi.Moshi
 import org.junit.Test
 import java.io.InputStream
 
-class RenderObjetAdapterTest {
+class RenderObjectAdapterTest {
 
     @Test
     fun `should adapt 3 nested children`() {
@@ -19,16 +19,16 @@ class RenderObjetAdapterTest {
         val result = subject.adapt(1000.0f, 1000.0f)
 
         val fakeAdaptedResult = listOf(
-            RenderObjet(
+            RenderObject(
                 Bounds(0.0f, 0.0f, 1000.0f, 1000.0f),
                 "#000000"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(
                     100.0f, 100.0f, 900.0f, 900.0f
                 ), backgroundColor = "#73D3A2"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(100.0f, 100.0f, 500.0f, 500.0f),
                 backgroundColor = "#cecece"
             )
@@ -44,15 +44,15 @@ class RenderObjetAdapterTest {
         val result = subject.adapt(1000.0f, 1000.0f)
 
         val fakeAdaptedResult = listOf(
-            RenderObjet(
+            RenderObject(
                 Bounds(0.0f, 0.0f, 1000.0f, 1000.0f),
                 "#000000"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(left = -300.0f, top = -300.0f, right = 500.0f, bottom = 500.0f),
                 "#73D3A2"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(left = -500.0f, top = -500.0f, right = -100.0f, bottom = -100.0f),
                 "#cecece"
             )
@@ -68,15 +68,15 @@ class RenderObjetAdapterTest {
         val result = subject.adapt(1000.0f, 1000.0f)
 
         val fakeAdaptedResult = listOf(
-            RenderObjet(
+            RenderObject(
                 Bounds(0.0f, 0.0f, 1000.0f, 1000.0f),
                 "#000000"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(left = 100.0f, top = 100.0f, right = 900.0f, bottom = 900.0f),
                 "#73D3A2"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(left = 180.0f, top = 420.0f, right = 820.0f, bottom = 580.0f),
                 "#6BA2F7"
             )
@@ -93,11 +93,11 @@ class RenderObjetAdapterTest {
         val result = subject.adapt(1000.0f, 1000.0f)
 
         val fakeAdaptedResult = listOf(
-            RenderObjet(
+            RenderObject(
                 Bounds(0.0f, 0.0f, 1000.0f, 1000.0f),
                 "#000000"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(left = -300.0f, top = 500.0f, right = 100.0f, bottom = 900.0f),
                 "#cecece"
             ),
@@ -113,20 +113,20 @@ class RenderObjetAdapterTest {
         val result = subject.adapt(1000.0f, 1000.0f)
 
         val fakeAdaptedResult = listOf(
-            RenderObjet(Bounds(left = 0.0f, top = 0.0f, right = 1000.0f, bottom = 1000.0f), "#6BA2F7"),
-            RenderObjet(
+            RenderObject(Bounds(left = 0.0f, top = 0.0f, right = 1000.0f, bottom = 1000.0f), "#6BA2F7"),
+            RenderObject(
                 Bounds(left = 100.0f, top = 100.0f, right = 900.0f, bottom = 900.0f),
                 "#73D3A2"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(left = 180.0f, top = 420.0f, right = 820.0f, bottom = 580.0f),
                 "#6BA2F7"
             ),
-            RenderObjet(
+            RenderObject(
                 Bounds(left = 244.0f, top = 436.0f, right = 468.0f, bottom = 564.0f),
                 "#73D3A2"
             ),
-            RenderObjet(Bounds(left = 532.0f, top = 436.0f, right = 756.0f, bottom = 564.0f), "#73D3A2")
+            RenderObject(Bounds(left = 532.0f, top = 436.0f, right = 756.0f, bottom = 564.0f), "#73D3A2")
         )
 
         assertThat(result).isEqualTo(fakeAdaptedResult)

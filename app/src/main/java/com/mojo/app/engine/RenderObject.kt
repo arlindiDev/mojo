@@ -2,7 +2,7 @@ package com.mojo.app.engine
 
 import android.graphics.Bitmap
 
-data class RenderObjet(
+data class RenderObject(
     val bounds: Bounds,
     val backgroundColor: String,
     val media: Media? = null

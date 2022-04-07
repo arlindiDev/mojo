@@ -7,9 +7,9 @@ class LayoutAdapter(
     private val layout: Layout,
     private val bitmapFromResource: ((resourceName: String) -> Bitmap)
 ) {
-    private lateinit var renderObjects: MutableList<RenderObjet>
+    private lateinit var renderObjects: MutableList<RenderObject>
 
-    fun adapt(width: Float, height: Float): List<RenderObjet> {
+    fun adapt(width: Float, height: Float): List<RenderObject> {
         renderObjects = mutableListOf()
 
         val startingBounds = Bounds(0.0f, 0.0f, width, height)
@@ -25,7 +25,7 @@ class LayoutAdapter(
         with(layout) {
             val mediaRender = media?.let { media(bounds, layout) }
 
-            renderObjects.add(RenderObjet(parentBounds, backgroundColor, mediaRender))
+            renderObjects.add(RenderObject(parentBounds, backgroundColor, mediaRender))
 
             children.forEach { childLayout ->
                 val childBounds = parentBounds.withPadding(layout.padding)
