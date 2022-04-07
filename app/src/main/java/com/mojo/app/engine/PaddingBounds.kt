@@ -1,6 +1,6 @@
-package com.mojo.app.drawing
+package com.mojo.app.engine
 
-fun Rect.withPadding(padding: Double): Rect {
+fun Bounds.withPadding(padding: Double): Bounds {
     if(padding == 0.0) {
         return this
     }
@@ -16,4 +16,6 @@ fun Rect.withPadding(padding: Double): Rect {
     )
 }
 
-
+private fun Double.invert(): Float {
+    return (1 - this).toFloat()
+}

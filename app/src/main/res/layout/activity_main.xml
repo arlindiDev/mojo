@@ -7,7 +7,7 @@
     android:background="#fff"
     tools:context=".MainActivity">
 
-    <com.mojo.app.MojoView
+    <com.mojo.app.render.MojoView
         android:id="@+id/mojoView"
         android:layout_width="300dp"
         android:layout_height="300dp"

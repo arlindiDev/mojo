@@ -1,4 +1,4 @@
-package com.mojo.app.drawing
+package com.mojo.app.engine
 
 import com.mojo.app.data.Layout
 import com.mojo.app.data.LeftAnchor
@@ -6,11 +6,11 @@ import com.mojo.app.data.RightAnchor
 import kotlin.math.min
 
 interface Anchor {
-    fun toParentBounds(layout: Layout): Rect
+    fun toParentBounds(layout: Layout): Bounds
 }
 
-class Left(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(layout: Layout): Rect {
+class Left(private val bounds: Bounds) : Anchor {
+    override fun toParentBounds(layout: Layout): Bounds {
         val width = bounds.right - bounds.left
 
         val left = bounds.left + width * layout.x.toFloat()
@@ -23,8 +23,8 @@ class Left(private val bounds: Rect) : Anchor {
     }
 }
 
-class Top(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(layout: Layout): Rect {
+class Top(private val bounds: Bounds) : Anchor {
+    override fun toParentBounds(layout: Layout): Bounds {
         val height = bounds.bottom - bounds.top
 
         val top = bounds.top + height * layout.y.toFloat()
@@ -37,8 +37,8 @@ class Top(private val bounds: Rect) : Anchor {
     }
 }
 
-class CenterX(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(layout: Layout): Rect {
+class CenterX(private val bounds: Bounds) : Anchor {
+    override fun toParentBounds(layout: Layout): Bounds {
         val width = bounds.right - bounds.left
 
         val left = bounds.left + width * layout.x.toFloat()
@@ -52,8 +52,8 @@ class CenterX(private val bounds: Rect) : Anchor {
     }
 }
 
-class CenterY(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(layout: Layout): Rect {
+class CenterY(private val bounds: Bounds) : Anchor {
+    override fun toParentBounds(layout: Layout): Bounds {
         val height = bounds.bottom - bounds.top
 
         val top = bounds.top + height * layout.y.toFloat()
@@ -67,8 +67,8 @@ class CenterY(private val bounds: Rect) : Anchor {
     }
 }
 
-class Right(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(layout: Layout): Rect {
+class Right(private val bounds: Bounds) : Anchor {
+    override fun toParentBounds(layout: Layout): Bounds {
         val width = bounds.right - bounds.left
 
         val left = bounds.left - width * layout.width.toFloat() + width * layout.x.toFloat()
@@ -81,8 +81,8 @@ class Right(private val bounds: Rect) : Anchor {
     }
 }
 
-class Bottom(private val bounds: Rect) : Anchor {
-    override fun toParentBounds(layout: Layout): Rect {
+class Bottom(private val bounds: Bounds) : Anchor {
+    override fun toParentBounds(layout: Layout): Bounds {
         val height = bounds.bottom - bounds.top
 
         val top = bounds.bottom - height * layout.height.toFloat() - height * layout.y.toFloat()
@@ -95,7 +95,7 @@ class Bottom(private val bounds: Rect) : Anchor {
     }
 }
 
-fun Rect.toAnchor(layout: Layout): Rect {
+fun Bounds.toAnchor(layout: Layout): Bounds {
     val anchorX = when (layout.anchorX) {
         LeftAnchor.left -> Left(this)
         LeftAnchor.center -> CenterX(this)

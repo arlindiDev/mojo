@@ -1,15 +1,15 @@
-package com.mojo.app
+package com.mojo.app.render
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import com.mojo.app.drawing.LayoutAdapter
-import com.mojo.app.drawing.color
-import com.mojo.app.drawing.defaultLayoutAdapter
-import com.mojo.app.drawing.toRectF
+import com.mojo.app.engine.Bounds
+import com.mojo.app.engine.LayoutAdapter
+import com.mojo.app.engine.defaultLayoutAdapter
 
 class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -38,3 +38,7 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
         drawRect(bounds, paint)
     }
 }
+
+fun Bounds.toRectF() = RectF(left, top, right, bottom)
+
+fun String.color() = Color.parseColor(this)

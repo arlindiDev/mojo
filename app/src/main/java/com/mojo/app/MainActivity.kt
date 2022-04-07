@@ -3,7 +3,7 @@ package com.mojo.app
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mojo.app.data.LayoutFetcher
-import com.mojo.app.drawing.LayoutAdapter
+import com.mojo.app.engine.LayoutAdapter
 import kotlinx.android.synthetic.main.activity_main.mojoView
 
 class MainActivity : AppCompatActivity() {

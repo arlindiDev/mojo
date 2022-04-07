@@ -1,4 +1,4 @@
-package com.mojo.app.drawing
+package com.mojo.app.engine
 
 import com.mojo.app.data.Layout
 import com.mojo.app.data.defaultLayout
@@ -9,14 +9,14 @@ class LayoutAdapter(private val layout: Layout) {
     fun adapt(width: Float, height: Float): List<RenderObjet> {
         renderObjects = mutableListOf()
 
-        val startingBounds = Rect(0.0f, 0.0f, width, height)
+        val startingBounds = Bounds(0.0f, 0.0f, width, height)
 
         flattenLayout(startingBounds, layout)
 
         return renderObjects.toList()
     }
 
-    private fun flattenLayout(bounds: Rect, layout: Layout) {
+    private fun flattenLayout(bounds: Bounds, layout: Layout) {
         val parentBounds = bounds.toAnchor(layout)
 
         with(layout) {
@@ -32,5 +32,3 @@ class LayoutAdapter(private val layout: Layout) {
 }
 
 val defaultLayoutAdapter = LayoutAdapter(defaultLayout)
-
-data class RenderObjet(val bounds: Rect, val backgroundColor: String)
