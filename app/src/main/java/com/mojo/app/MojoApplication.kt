@@ -1,11 +1,15 @@
 package com.mojo.app
 
 import android.app.Application
+import com.mojo.app.di.DefaultDispatchers
 import com.mojo.app.di.DefaultLayoutFetcherLocator
 import com.mojo.app.di.LayoutFetcherLocator
+import kotlinx.coroutines.CoroutineDispatcher
 
 interface Injector {
     fun layoutFetcherLocator(): LayoutFetcherLocator
+
+    fun dispatcherIO(): CoroutineDispatcher
 }
 
 class MojoApplication : Application(), Injector {
@@ -18,4 +22,6 @@ class MojoApplication : Application(), Injector {
     }
 
     override fun layoutFetcherLocator() = layoutFetcherLocator
+
+    override fun dispatcherIO() = DefaultDispatchers().IO
 }

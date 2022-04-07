@@ -8,11 +8,11 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import com.mojo.app.engine.Bounds
-import com.mojo.app.engine.LayoutAdapter
+import com.mojo.app.engine.RenderObject
 
 class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    var layoutAdapter: LayoutAdapter? = null
+    var renderObjects: List<RenderObject> = emptyList()
         set(value) {
             field = value
             invalidate()
@@ -21,13 +21,13 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     override fun draw(canvas: Canvas?) {
         super.draw(canvas)
 
-        val renderObjects = layoutAdapter?.adapt(width.toFloat(), height.toFloat()) ?: emptyList()
-
         renderObjects.forEach { objectToRender ->
-            canvas?.drawBackground(objectToRender.bounds.toRectF(), objectToRender.backgroundColor.color())
+            val bounds = objectToRender.bounds.toRectF()
+            canvas?.drawBackground(bounds, objectToRender.backgroundColor.color())
 
             objectToRender.media?.let { media ->
-                canvas?.drawBitmap(media.bitmap, null, media.bitmapBounds.toRectF(), null)
+                val bitmapBounds = media.bitmapBounds.toRectF()
+                canvas?.drawBitmap(media.bitmap, null, bitmapBounds, null)
             }
         }
     }

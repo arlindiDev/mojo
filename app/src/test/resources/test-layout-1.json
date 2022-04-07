@@ -25,7 +25,9 @@
           "y": 0,
           "anchor_x": "left",
           "anchor_y": "top",
-          "background_color": "#cecece"
+          "background_color": "#cecece",
+          "media": "mojo",
+          "media_content_mode": "fill"
         }
       ]
     }

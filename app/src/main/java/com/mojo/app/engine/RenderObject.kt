@@ -5,10 +5,10 @@ import android.graphics.Bitmap
 data class RenderObject(
     val bounds: Bounds,
     val backgroundColor: String,
-    val media: Media? = null
+    val media: MediaObject? = null
 )
 
-data class Media(
+data class MediaObject(
     val bitmap: Bitmap,
     val bitmapBounds: Bounds,
 )

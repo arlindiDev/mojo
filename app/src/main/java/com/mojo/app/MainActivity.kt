@@ -1,14 +1,18 @@
 package com.mojo.app
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.coroutineScope
+import com.mojo.app.data.LayoutFetcher
 import com.mojo.app.engine.LayoutAdapter
-import kotlinx.android.synthetic.main.activity_main.*
+import com.mojo.app.engine.media.DefaultImageFetcher
+import kotlinx.android.synthetic.main.activity_main.mojoView
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.flowOn
 
 class MainActivity : AppCompatActivity() {
+    lateinit var layoutFetcher: LayoutFetcher
+    lateinit var dispatcher: CoroutineDispatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,16 +20,26 @@ class MainActivity : AppCompatActivity() {
 
         val injector = (applicationContext as Injector)
 
-        val layoutFetcher = injector.layoutFetcherLocator().layoutFetcher(this)
+        layoutFetcher = injector.layoutFetcherLocator().layoutFetcher(this)
+        dispatcher = injector.dispatcherIO()
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         layoutFetcher.fetch()?.let { layout ->
-            mojoView.layoutAdapter = LayoutAdapter(layout, ::bitmapFromResource)
+            lifecycle.coroutineScope.launchWhenResumed {
+                LayoutAdapter(layout, DefaultImageFetcher(::getIdFor))
+                    .adapt(mojoView.layoutParams.width, mojoView.layoutParams.height)
+                    .flowOn(dispatcher)
+                    .collect { renderObjects ->
+                        mojoView.renderObjects = renderObjects
+                    }
+            }
         }
     }
 
-    private fun bitmapFromResource(resourceName: String) : Bitmap {
-        val id = resources.getIdentifier(resourceName, "drawable", packageName)
+    private fun getIdFor(resourceName: String) =
+        resources.getIdentifier(resourceName, "drawable", packageName)
 
-        return AppCompatResources.getDrawable(this, id)!!.toBitmap()
-    }
 }

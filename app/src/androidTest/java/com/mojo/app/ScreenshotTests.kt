@@ -8,13 +8,17 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.mojo.app.helpers.readLayoutFrom
 import com.mojo.app.helpers.launch
 import com.mojo.app.helpers.Size
+import com.mojo.app.helpers.idlingresource.DispatchersIdlingResourceRule
 import com.mojo.app.matchers.hasBitmap
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class ScreenshotTests {
+
+    @Rule
+    @JvmField val dispatcherRule = DispatchersIdlingResourceRule()
 
     val context = getInstrumentation().context
     val application = (getInstrumentation().targetContext.applicationContext as TestMojoApplication)
@@ -65,12 +69,23 @@ class ScreenshotTests {
 
     @Test
     fun testTheRealLayoutFromTheTest() {
-        val layoutFileName = "the-layout-from-the-test" // the JSON layout file name from "androidTest/assets/"
-        application.layout = readLayoutFrom(context, layoutFileName) // sets the JSON layout on the app
+        val layoutFileName = "the-layout-from-the-test"
+        application.layout = readLayoutFrom(context, layoutFileName)
 
-        launch(Size(1024, 1024)) { // we can test different screen sized
+        launch(Size(1024, 1024)) {
             onView(withId(R.id.mojoView))
-                .check(matches(hasBitmap(context, layoutFileName))) // compares the MojoView Bitmap with the test PNG from "androidTest/assets/"
+                .check(matches(hasBitmap(context, layoutFileName)))
+        }
+    }
+
+    @Test
+    fun testWithMedia() {
+        val layoutFileName = "test-with-media"
+        application.layout = readLayoutFrom(context, layoutFileName)
+
+        launch(Size(1024, 1024)) {
+            onView(withId(R.id.mojoView))
+                .check(matches(hasBitmap(context, layoutFileName)))
         }
     }
 }
