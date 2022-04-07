@@ -16,8 +16,15 @@ data class Layout(
     @Json(name="background_color")
     val backgroundColor: String,
     val padding: Double = 0.0,
+    val media: String? = null,
+    @Json(name="media_content_mode")
+    val mediaContentMode: MediaContentMode? = null,
     val children: List<Layout> = emptyList()
 )
+
+enum class MediaContentMode {
+    fill, fit
+}
 
 enum class LeftAnchor {
     left, center, right
@@ -26,7 +33,3 @@ enum class LeftAnchor {
 enum class RightAnchor {
     bottom, center, top
 }
-
-val defaultLayout = Layout(
-    backgroundColor = "#fff"
-)

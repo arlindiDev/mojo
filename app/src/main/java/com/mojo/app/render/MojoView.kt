@@ -9,11 +9,10 @@ import android.util.AttributeSet
 import android.view.View
 import com.mojo.app.engine.Bounds
 import com.mojo.app.engine.LayoutAdapter
-import com.mojo.app.engine.defaultLayoutAdapter
 
 class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    var layoutAdapter: LayoutAdapter = defaultLayoutAdapter
+    var layoutAdapter: LayoutAdapter? = null
         set(value) {
             field = value
             invalidate()
@@ -22,10 +21,14 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     override fun draw(canvas: Canvas?) {
         super.draw(canvas)
 
-        val renderObjects = layoutAdapter.adapt(width.toFloat(), height.toFloat())
+        val renderObjects = layoutAdapter?.adapt(width.toFloat(), height.toFloat()) ?: emptyList()
 
         renderObjects.forEach { objectToRender ->
             canvas?.drawBackground(objectToRender.bounds.toRectF(), objectToRender.backgroundColor.color())
+
+            objectToRender.media?.let { media ->
+                canvas?.drawBitmap(media.bitmap, null, media.bitmapBounds.toRectF(), null)
+            }
         }
     }
 

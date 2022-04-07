@@ -65,12 +65,12 @@ class ScreenshotTests {
 
     @Test
     fun testTheRealLayoutFromTheTest() {
-        val layoutFileName = "the-layout-from-the-test"
-        application.layout = readLayoutFrom(context, layoutFileName)
+        val layoutFileName = "the-layout-from-the-test" // the JSON layout file name from "androidTest/assets/"
+        application.layout = readLayoutFrom(context, layoutFileName) // sets the JSON layout on the app
 
-        launch(Size(1024, 1024)) {
+        launch(Size(1024, 1024)) { // we can test different screen sized
             onView(withId(R.id.mojoView))
-                .check(matches(hasBitmap(context, layoutFileName)))
+                .check(matches(hasBitmap(context, layoutFileName))) // compares the MojoView Bitmap with the test PNG from "androidTest/assets/"
         }
     }
 }

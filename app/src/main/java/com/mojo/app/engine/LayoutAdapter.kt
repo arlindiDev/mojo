@@ -1,9 +1,12 @@
 package com.mojo.app.engine
 
+import android.graphics.Bitmap
 import com.mojo.app.data.Layout
-import com.mojo.app.data.defaultLayout
 
-class LayoutAdapter(private val layout: Layout) {
+class LayoutAdapter(
+    private val layout: Layout,
+    private val bitmapFromResource: ((resourceName: String) -> Bitmap)
+) {
     private lateinit var renderObjects: MutableList<RenderObjet>
 
     fun adapt(width: Float, height: Float): List<RenderObjet> {
@@ -20,7 +23,9 @@ class LayoutAdapter(private val layout: Layout) {
         val parentBounds = bounds.toAnchor(layout)
 
         with(layout) {
-            renderObjects.add(RenderObjet(parentBounds, backgroundColor))
+            val mediaRender = media?.let { media(bounds, layout) }
+
+            renderObjects.add(RenderObjet(parentBounds, backgroundColor, mediaRender))
 
             children.forEach { childLayout ->
                 val childBounds = parentBounds.withPadding(layout.padding)
@@ -29,6 +34,9 @@ class LayoutAdapter(private val layout: Layout) {
             }
         }
     }
-}
 
-val defaultLayoutAdapter = LayoutAdapter(defaultLayout)
+    private fun media(bounds: Bounds, layout: Layout): Media {
+        val bitmap = bitmapFromResource.invoke(layout.media!!)
+        return Media(bitmap, bounds)
+    }
+}
