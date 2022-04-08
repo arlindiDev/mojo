@@ -30,7 +30,7 @@ The engine package contains the classes related to converting/adapting the Layou
 - `media.MediaAdapter`, is the same as LayoutManager, only it takes care of the media field on Layout. The media field tells the Adapter that the `RenderObject` needs to include an image. The Layout media fields adapt to the MediaObject. Picasso is used to fetch images, scale and fit/fill those images in the pre-calculated bounds.
 - `media.ImageFetcher`, follows the Builder pattern and is a wrapper on Picasso builder functions. `ImageFetcher` wraps Picasso to enable unit-testing the `MediaAdapter`
 - `RenderObject` and `MediaObject` contain the bounds, color, and bitmap that the `MojoView` uses to draw/render the objects on the screen.
-Anchor and Padding contain the calculations for the bounds depending on the anchor_x/anchor_y, width/height, and padding of the Layout.
+- `Anchor` and `Padding`, contain the calculations for the bounds depending on the anchor_x/anchor_y, width/height, and padding of the Layout.
 
 ## di
 The di(Dependency Injection) package contains:
