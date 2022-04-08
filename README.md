@@ -44,6 +44,10 @@ The di(Dependency Injection) package contains:
 # Screenshot Tests
 Screenshot tests are in the `ScreenshotTests.kt` file.
 
+The test application(TestMojoApplication), loads the JSON layout from the **androidTest/assets/** folder.
+
+The **androidTest/assets** folder contains the test JSON layouts and test PNG images. Those assets do not compile for the actual application, only for the test application, which lets us add as many test images or test JSON layout files as we like, and the actual application does not increase in size(MB).
+
 Each test needs 3 inputs:
 
 1. The test JSON layout
