@@ -14,8 +14,8 @@ The Mojo Application takes a JSON layout file and renderes those layouts via an 
 The Project contains the following package structure:
 ## data
 The data package holds:
-- Layout. The Layout is the kotlin representation of the JSON object.
-- LayoutFetcher. The LayoutFetcher is responsible to fetch & parse the JSON string.
+- `Layout`, is the kotlin representation of the JSON object.
+- `LayoutFetcher`, is responsible to fetch & parse the JSON string.
 
 ## render
 The render package contains only the `MojoView` class.
@@ -39,7 +39,15 @@ The di(Dependency Injection) package contains:
 - `MojoApplication`, is the Android Application class. `MojoApplication` implements `Injector` from where `MainActivity` fetches its dependencies. We have a `TestMojoApplication` for screenshot tests, in which we mock/fake out the dependencies from `Injector`.
 
 # From JSON to onDraw
+Below are the app's steps from reading the JSON to rendering on screen:
 
+1. The app reads the JSON from resources. `LayoutFetcher` fetches and parses the JSON into a `Layout` object
+2. The `Layout` is sent to the `LayoutAdapter`.
+3. The `LayoutAdapter` flattens and calculates the bounds of all items(and children) in the `Layout`, including fetching media.
+4. The `LayoutAdapter` calculates the `bounds(left, top, right, bottom)` positions for the object based on the anchors, width/height, and x/y.
+5. If the layout item contains a `media` field, the `MediaAdapter` loads the bitmap via Picasso, calculates the bounds and scales the image(bitmap).
+6. After the `LayoutAdapter` flattens the `Layout`, the `List<RenderObject>` is sent to the `MojoView`.
+7. The `MojoView` iterates the `List<RenderObject>` and directly draws each item on the screen. No position calculations are necessary.
 
 # Screenshot Tests
 Screenshot tests are in the `ScreenshotTests.kt` file.
