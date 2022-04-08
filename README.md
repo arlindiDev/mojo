@@ -64,6 +64,8 @@ The screenshot tests follow the steps below to perform a test:
 3. The test catches(screenshots) the `MojoView` by converting the `MojoView` to a bitmap.
 4. The test compares the screenshot(Bitmap of the `MojoView`) with the test PNG(also a Bitmap) that we initially provided.
 
+When running the screenshot test, use a Pixel 5 emulator. Otherwise, the rendered images might be slightly different from the test PNGs. We would have a list of test PNGs per device in a real test environment.
+
 Below is a test example:
 ```
 @Test
@@ -78,4 +80,62 @@ fun testTheRealLayoutFromTheTest() {
 }
 ```
 # Unit Tests
+The `LayoutAdapterTest` tests the JSON parsing, calculating bounds, and flattening the JSON layout input into `List<RenderObject>`. 
+The JSON layout files are in the **test/resources/** folder.
 
+In the real app, we use image loading via `ImageFetcher`, but in unit tests, we can mock the `ImageFetcher` and pass in a mock for the `Bitmap`.
+
+For example, JSON:
+```
+{
+  "background_color": "#000000",
+  "padding": 0.25,
+  "children": [
+    {
+      "background_color": "#ff0000",
+      "anchor_x": "left",
+      "anchor_y": "bottom",
+      "media": "mojo",
+      "media_content_mode": "fill"
+    }
+  ]
+}
+```
+The above JSON is adapted(flattened) into a kotlin `List<RenderObject>`:
+```
+listOf(
+    RenderObject(Bounds(0,0, 1000, 1000), "#000000"),
+    RenderObject(Bounds(250, 250, 750, 750), "#000000"),
+    MediaObject(
+        bitmap,
+        bitmapBounds=Bounds(left=100.0f, top=100.0f, right=500.0f, bottom=500.0f)
+    )
+)
+```
+
+Thus, we can easily assert the result from `LayoutAdapter` and the fake test data. Below is an example of a unit test:
+
+```
+val bitmap = mock()
+
+@Test
+fun `should adapt 3 nested children`() = runBlocking {
+    val subject = LayoutAdapter(
+        tolayout("/test-layout-1.json"),
+        imageFetcher
+    )
+
+    subject.adapt(1000, 1000).collect { result ->
+        val fakeAdaptedResult = listOf(
+             RenderObject(Bounds(0,0, 1000, 1000), "#000000"),
+             RenderObject(Bounds(250, 250, 750, 750), "#000000"),
+             MediaObject(
+                bitmap,
+                bitmapBounds=Bounds(left=100.0f, top=100.0f, right=500.0f, bottom=500.0f)
+            )
+        )
+
+        assertThat(result).isEqualTo(fakeAdaptedResult)
+    }
+}
+```
