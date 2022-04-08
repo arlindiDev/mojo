@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import com.mojo.app.data.LayoutFetcher
+import com.mojo.app.di.Injector
 import com.mojo.app.engine.LayoutAdapter
 import com.mojo.app.engine.media.DefaultImageFetcher
 import kotlinx.android.synthetic.main.activity_main.mojoView

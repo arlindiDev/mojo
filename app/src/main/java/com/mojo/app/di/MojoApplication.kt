@@ -1,4 +1,4 @@
-package com.mojo.app
+package com.mojo.app.di
 
 import android.app.Application
 import com.mojo.app.di.DefaultDispatchers
