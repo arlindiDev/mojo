@@ -42,5 +42,36 @@ The di(Dependency Injection) package contains:
 
 
 # Screenshot Tests
+Screenshot tests are in the `ScreenshotTests.kt` file.
+
+Each test needs 3 inputs:
+
+1. The test JSON layout
+2. a PNG file of how the JSON layout on the screen renders
+3. The size of the MojoView that we are testing, for example: 1024x1024
+ 
+Inside the **androidTest/assets** folder, there are test JSON layouts and their corresponding rendered images(PNG format), for example:
+the-layout-from-the-test.json
+the-layout-from-the-test.png
+The screenshot tests follow the steps below to perform a test:
+
+1. The test sets up the `TestMojoApplication` with the test JSON layout.
+2. The app renders the test JSON layout.
+3. The test catches(screenshots) the `MojoView` by converting the `MojoView` to a bitmap.
+4. The test compares the screenshot(Bitmap of the `MojoView`) with the test PNG(also a Bitmap) that we initially provided.
+
+Below is a test example:
+```
+@Test
+fun testTheRealLayoutFromTheTest() {
+    val layoutFileName = "the-layout-from-the-test" // the JSON layout file name from "androidTest/assets/"
+    application.layout = readLayoutFrom(context, layoutFileName) // sets the JSON layout on the app
+
+    launch(Size(1024, 1024)) { // we can test different screen sizes
+        onView(withId(R.id.mojoView))
+            .check(matches(hasBitmap(context, layoutFileName))) // compares the MojoView Bitmap with the test PNG from "androidTest/assets/"
+    }
+}
+```
 # Unit Tests
 
