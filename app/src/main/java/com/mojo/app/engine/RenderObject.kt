@@ -11,4 +11,5 @@ data class RenderObject(
 data class MediaObject(
     val bitmap: Bitmap,
     val bitmapBounds: Bounds,
+    val crop: Bounds? = null
 )

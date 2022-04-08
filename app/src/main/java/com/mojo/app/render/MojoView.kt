@@ -1,10 +1,7 @@
 package com.mojo.app.render
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.mojo.app.engine.Bounds
@@ -27,7 +24,8 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
             objectToRender.media?.let { media ->
                 val bitmapBounds = media.bitmapBounds.toRectF()
-                canvas?.drawBitmap(media.bitmap, null, bitmapBounds, null)
+                val crop = media.crop.toRect()
+                canvas?.drawBitmap(media.bitmap, crop, bitmapBounds, null)
             }
         }
     }
@@ -43,5 +41,8 @@ class MojoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 }
 
 fun Bounds.toRectF() = RectF(left, top, right, bottom)
+fun Bounds?.toRect() = this?.let {
+    Rect(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
+}
 
 fun String.color() = Color.parseColor(this)
