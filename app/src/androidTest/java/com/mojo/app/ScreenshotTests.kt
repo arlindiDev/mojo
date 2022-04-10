@@ -10,6 +10,7 @@ import com.mojo.app.helpers.launch
 import com.mojo.app.helpers.Size
 import com.mojo.app.helpers.idlingresource.DispatchersIdlingResourceRule
 import com.mojo.app.matchers.hasBitmap
+import com.mojo.app.matchers.moveFromTo
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -86,6 +87,23 @@ class ScreenshotTests {
         launch(Size(1024, 1024)) {
             onView(withId(R.id.mojoView))
                 .check(matches(hasBitmap(context, layoutFileName)))
+        }
+    }
+
+    @Test
+    fun testWithMediaMotion() {
+        val layoutFileName = "test-layout-media-motion"
+        application.layout = readLayoutFrom(context, layoutFileName)
+
+        launch(Size(1024, 1024)) {
+            onView(withId(R.id.mojoView))
+                .check(matches(hasBitmap(context, "test-layout-media-motion-before")))
+
+            onView(withId(R.id.mojoView))
+                .perform(moveFromTo(233f, 356f, 400f, 356f))
+
+            onView(withId(R.id.mojoView))
+                .check(matches(hasBitmap(context, "test-layout-media-motion-after")))
         }
     }
 }
