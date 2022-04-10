@@ -11,6 +11,7 @@ import com.mojo.app.data.LayoutFetcher
 import com.mojo.app.di.Injector
 import com.mojo.app.engine.LayoutAdapter
 import com.mojo.app.engine.media.DefaultImageFetcher
+import com.mojo.app.engine.motion.Coordinates
 import com.mojo.app.engine.motion.MotionHandler
 import kotlinx.android.synthetic.main.activity_main.mojoView
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,13 +37,16 @@ class MainActivity : AppCompatActivity() {
         mojoView.setOnTouchListener { _, event ->
             when (event.action) {
                 ACTION_DOWN -> {
-                    motionHandler.initialX = event.rawX
-                    motionHandler.initialY = event.rawY
+                    motionHandler.initialRaw = Coordinates(event.rawX, event.rawY)
+                    motionHandler.initialRelativeToView = Coordinates(event.x, event.y)
                 }
-                ACTION_MOVE -> motionHandler.move(event.rawX, event.rawY)
+                ACTION_MOVE ->
+                    motionHandler.move(
+                        Coordinates(event.x, event.y)
+                    )
                 ACTION_UP -> {
-                    motionHandler.initialX = 0f
-                    motionHandler.initialY = 0f
+                    motionHandler.initialRaw = Coordinates()
+                    motionHandler.initialRelativeToView = Coordinates()
                 }
             }
 

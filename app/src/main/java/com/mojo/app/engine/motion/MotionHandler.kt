@@ -12,16 +12,16 @@ class MotionHandler(initialRenderedObjects: List<RenderObject>) {
     private val _renderObjects = MutableStateFlow(initialRenderedObjects)
     val renderedObjects = _renderObjects.asStateFlow()
 
-    var initialX = 0f
-    var initialY = 0f
+    var initialRaw = Coordinates()
+    var initialRelativeToView = Coordinates()
 
-    fun move(x: Float, y: Float) {
-        val renderObject = findRenderedObject(x, y)
+    fun move(raw: Coordinates) {
+        val renderObject = findRenderedObject() ?: return
 
-        val distanceX = initialX - x
-        val distanceY = initialY - y
-        initialX = x
-        initialY = y
+        val distanceX = initialRaw.x - raw.x
+        val distanceY = initialRaw.y - raw.y
+
+        initialRaw = Coordinates(raw.x, raw.y)
 
         val media = renderObject.media!!
 
@@ -61,12 +61,16 @@ class MotionHandler(initialRenderedObjects: List<RenderObject>) {
         }
     }
 
-    private fun findRenderedObject(x: Float, y: Float): RenderObject {
-        // last one on screen with media
-        return renderedObjects.value.last()
+    private fun findRenderedObject(): RenderObject? {
+        return renderedObjects.value
+            .lastOrNull { it.media?.crop != null && it.bounds.inRange(initialRelativeToView.x, initialRelativeToView.y)  }
     }
 }
 
 fun Float.ensureRange(min: Float, max: Float): Float {
     return min(max(this, min), max)
+}
+
+fun Bounds.inRange(x: Float, y: Float): Boolean {
+   return x in left..right && y in top..bottom
 }
