@@ -54,7 +54,8 @@ class LayoutAdapterTest {
                     "#cecece",
                     MediaObject(
                         bitmap,
-                        bitmapBounds=Bounds(left=100.0f, top=100.0f, right=500.0f, bottom=500.0f)
+                        Bounds(left=100.0f, top=100.0f, right=500.0f, bottom=500.0f),
+                        Bounds(left=0.0f, top=-150.0f, right=400.0f, bottom=250.0f)
                     )
                 )
             )
